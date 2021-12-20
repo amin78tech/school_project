@@ -28,23 +28,23 @@
         </div>
         <div class="form-group input-group">
             <span class="input-group-addon">Password</span>
-            <input type="text" class="form-control" value="{{ $password }}" name="password">
+            <input type="text" class="form-control"  placeholder="{{ $password }}" name="password">
         </div>
         <div class="form-group">
             <label>Change Type User</label>
-            @if($role=="student")
+            @if($role[0]['pivot']['role_id']==3)
                 <label class="radio-inline">
-                    <input type="radio" name="option" id="optionsRadiosInline1" value="{{ $role }}" checked>Student
+                    <input type="radio" name="option" id="optionsRadiosInline1" value="{{ $role[0]['pivot']['role_id'] }}" checked>Student
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="option" id="optionsRadiosInline2" value="teacher">Teacher
+                    <input type="radio" name="option" id="optionsRadiosInline2" value="2">Teacher
                 </label>
             @else
                 <label class="radio-inline">
-                    <input type="radio" name="option" id="optionsRadiosInline1" value="{{ $role }}" checked>Teacher
+                    <input type="radio" name="option" id="optionsRadiosInline1" value="{{ $role[0]['pivot']['role_id'] }}" checked>Teacher
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="option" id="optionsRadiosInline2" value="student">Student
+                    <input type="radio" name="option" id="optionsRadiosInline2" value="3">Student
                 </label>
             @endif
         </div>

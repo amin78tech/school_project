@@ -38,17 +38,16 @@
                                     <div class="form-group">
                                         <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
+
                                     <div class="form-group">
-                                        <label>Select Type</label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="option" id="optionsRadiosInline1" value="admin" checked>Admin
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="option" id="optionsRadiosInline2" value="teacher">Teacher
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="option" id="optionsRadiosInline3" value="student">Student
-                                        </label>
+                                        <label>Select Type:</label>
+                                            @foreach($roles as $role)
+                                                    @if($role['name']!=='admin')
+                                                        <label class="radio-inline">
+                                                        <input type="radio" name="option" id="{{ "optionsRadiosInline".$num++ }}" value="{{ $role['id'] }}" checked> {{ $role['name'] }}
+                                                        </label>
+                                                    @endif
+                                             @endforeach
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block btn-lg">Register</button>
                                 </fieldset>

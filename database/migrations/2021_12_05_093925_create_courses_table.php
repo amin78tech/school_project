@@ -10,15 +10,15 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("user_id");
-            $table->string("name",150);
-            $table->timestamp("start_date")->nullable();
-            $table->timestamp("end_date")->nullable();
-            $table->foreign("user_id")->references("id")->on("users")
-                ->cascadeOnDelete("CASCADE")
-                ->cascadeOnUpdate("CASCADE");
+            $table->unsignedBigInteger('user_id');
+            $table->string('title',150);
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnDelete('CASCADE')
+                ->cascadeOnUpdate('CASCADE');
             $table->timestamps();
-            $table->timestamp("deleted_at");
+            $table->timestamp('deleted_at')->nullable();
         });
     }
     public function down()

@@ -75,17 +75,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($users as $users)
+                                @foreach($users as $user)
                                     <tr>
-                                        <td>{{ $users['id'] }}</td>
-                                        <td>{{ $users['name'] }}</td>
-                                        <td>{{ $users['family'] }}</td>
-                                        <td>{{ $users['username'] }}</td>
-                                        <td>{{ $users['email'] }}</td>
-                                        <td>{{ $users["role"] }}</td>
-                                        @if($users['status']==0)
+                                        <td>{{ $user['id'] }}</td>
+                                        <td>{{ $user['name'] }}</td>
+                                        <td>{{ $user['family'] }}</td>
+                                        <td>{{ $user['username'] }}</td>
+                                        <td>{{ $user['email'] }}</td>
+                                        <td>
+                                            @if($user['pivot']['role_id']==2)
+                                                teacher
+                                            @else
+                                                student
+                                            @endif
+                                        </td>
+                                        @if($user['status']==0)
                                             <td>
-                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$users["id"]]) }}">
+                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$user["id"]]) }}">
                                                     @method('PUT')
                                                     @csrf
                                                     <input type="hidden" value="inactive" name="status">
@@ -94,7 +100,7 @@
                                             </td>
                                         @else
                                             <td>
-                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$users["id"]]) }}">
+                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$user["id"]]) }}">
                                                     @method('PUT')
                                                     @csrf
                                                     <input type="hidden" value="active" name="status">
@@ -103,12 +109,12 @@
                                             </td>
                                         @endif
                                         <td style="display: flex; justify-content: center">
-                                            <form method="post" action="{{ route("UserController.destroy",["id"=>$users["id"]]) }}">
+                                            <form method="post" action="{{ route("UserController.destroy",["id"=>$user["id"]]) }}">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-danger fa fa-trash"></button>
                                             </form>
-                                            <form method="get" action="{{ route("UserController.edit",["id"=>$users["id"]]) }}">
+                                            <form method="get" action="{{ route("UserController.edit",["id"=>$user["id"]]) }}">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-primary fa fa-edit" style="margin-left: 1.4rem !important;"></button>
                                             </form>
@@ -149,46 +155,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(count($searchUser)===1)
-                                                                        <tr>
-                                        <td>{{ $searchUser[0]->id }}</td>
-                                        <td>{{ $searchUser[0]->name }}</td>
-                                        <td>{{ $searchUser[0]->family }}</td>
-                                        <td>{{ $searchUser[0]->username }}</td>
-                                        <td>{{ $searchUser[0]->email }}</td>
-                                        <td>{{ $searchUser[0]->role }}</td>
-                                        @if($searchUser[0]->status==0)
-                                            <td>
-                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$searchUser[0]->id]) }}">
-                                                    @method('PUT')
-                                                    @csrf
-                                                    <input type="hidden" value="inactive" name="status">
-                                                    <button type="submit" class="btn btn-sm btn-danger fa fa-toggle-off"></button>
-                                                </form>
-                                            </td>
-                                        @else
-                                            <td>
-                                                <form method="post" action="{{ route("UserController.updateStatus",["id"=>$searchUser[0]->id]) }}">
-                                                    @method('PUT')
-                                                    @csrf
-                                                    <input type="hidden" value="active" name="status">
-                                                    <button type="submit" class="btn btn-sm btn-success fa fa-toggle-on"></button>
-                                                </form>
-                                            </td>
-                                        @endif
-                                        <td style="display: flex; justify-content: center">
-                                            <form method="post" action="{{ route("UserController.destroy",["id"=>$searchUser[0]->id]) }}">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger fa fa-trash"></button>
-                                            </form>
-                                            <form method="get" action="{{ route("UserController.edit",["id"=>$searchUser[0]->id]) }}">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary fa fa-edit" style="margin-left: 1.4rem !important;"></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @elseif(count($searchUser)>1)
                                     @foreach($searchUser as $users)
                                         <tr>
                                             <td>{{ $users['id'] }}</td>
@@ -196,7 +162,21 @@
                                             <td>{{ $users['family'] }}</td>
                                             <td>{{ $users['username'] }}</td>
                                             <td>{{ $users['email'] }}</td>
-                                            <td>{{ $users['role'] }}</td>
+                                            <td>
+                                                @if(isset($role))
+                                                        @if($role[0]['pivot']['role_id']==2)
+                                                            teacher
+                                                        @else
+                                                            student
+                                                        @endif
+                                                @else
+                                                    @if( $users['pivot']['role_id']==2 )
+                                                        teacher
+                                                    @else
+                                                        student
+                                                        @endif
+                                                @endif
+                                            </td>
                                             @if($users['status']==0)
                                                 <td>
                                                     <form method="post" action="{{ route("UserController.updateStatus",["id"=>$users['id']]) }}">
@@ -229,7 +209,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
                         </div>

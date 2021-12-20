@@ -26,7 +26,7 @@
             <label>Selects Teacher</label>
             <select class="form-control" name="optionTeacher">
                 @foreach($teachers as $teacher)
-                    <option value="{{ $teacher['id'] }}">{{ $teacher['name'].' '.$teacher['family'] }}</option>
+                    <option value="{{ $teacher['user_id'] }}">{{ $teacher['name'].' '.$teacher['family'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -34,7 +34,7 @@
             <label>Selects Student Multiple(Ctrl+ Click Right)</label>
             <select  class="form-control" name="optionStudent[]" multiple="multiple">
                 @foreach($students as $student)
-                    <option value="{{ $student['id'] }}">{{ $student['name'].' '.$student['family'] }}</option>
+                    <option value="{{ $student['user_id'] }}">{{ $student['name'].' '.$student['family'] }}</option>
                 @endforeach
             </select>
         </div>

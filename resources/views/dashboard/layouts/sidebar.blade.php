@@ -15,6 +15,7 @@
             <li>
                 <a href=""><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
+            @can('view-admin-role')
             <li>
                 <a href="#"><i class="fa fa-user fa-fw"></i> Users<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -34,17 +35,39 @@
                     </li>
                 </ul>
             </li>
-{{--            <li>--}}
-{{--                <a href="#"><i class="fa fa-list-ol fa-fw"></i> category<span class="fa arrow"></span></a>--}}
-{{--                <ul class="nav nav-second-level">--}}
-{{--                    <li>--}}
-{{--                        <a href="">list</a>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <a href="">create</a>--}}
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </li>--}}
+            @endcan
+            @can('view-teacher-role')
+            <li>
+                <a href="#"><i class="fa fa-file-text-o fa-fw"></i> exam<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('ExamsController.showTeacherCourse') }}">Course list</a>
+                    </li>
+                </ul>
+            </li>
+                <li>
+                    <a href="#"><i class="fa  fa-pencil-square-o fa-fw"></i> question<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ route('QuestionsController.showQuestions') }}">list</a>
+                        </li>
+                        <li>
+                            <a href="#">Create <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="{{ route('QuestionsController.showDescriptive') }}">descriptive</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('QuestionsController.showTest') }}">test</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-third-level -->
+                        </li>
+                    </ul>
+
+                </li>
+
+            @endcan
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

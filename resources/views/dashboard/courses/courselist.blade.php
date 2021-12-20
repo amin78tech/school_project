@@ -24,7 +24,7 @@
                                 @foreach($courses as $course)
                                     <tr>
                                         <td>{{ $course['id'] }}</td>
-                                        <td>{{ $course['name'] }}</td>
+                                        <td>{{ $course['title'] }}</td>
                                         <td>{{ $course['start_date'] }}</td>
                                         <td>{{ $course['end_date'] }}</td>
                                         <td style="display: flex; justify-content: center">

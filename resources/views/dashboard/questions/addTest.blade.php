@@ -1,0 +1,27 @@
+@extends("dashboard.layouts.dashboard")
+@section("content")
+            @if($errors->all()!=null)
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger alert-dismissible" style="text-align: right;margin-top: 1rem !important;";>
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ $error }}
+                    </div>
+                @endforeach
+            @endif
+    <form role="form" action="" method="post">
+        @csrf
+        <div class="form-group input-group">
+            <span class="input-group-addon">Title</span>
+            <input type="text" class="form-control" name="title">
+        </div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">Default Score</span>
+            <input type="number" class="form-control" name="score">
+        </div>
+        <button class="btn btn-warning" onclick="AddOption()" type="button">Add Option</button>
+        <div class="form-group input-group addOp" style="margin-top: 1rem;">
+            <span class="input-group-addon">Option</span>
+            <input type="text" class="form-control" name="option[]" placeholder="1(value, 0 or 1)">
+        </div>
+        <button class="btn btn-success btn-block">Create</button>
+@endsection

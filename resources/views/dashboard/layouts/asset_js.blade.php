@@ -8,3 +8,6 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="/js/startmin.js"></script>
+
+<script src="/js/myscript.js"></script>
+
