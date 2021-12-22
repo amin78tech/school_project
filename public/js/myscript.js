@@ -15,3 +15,18 @@ function removeDisable(e){
         e.srcElement.parentNode.parentNode.childNodes[count_arr].childNodes[1].disabled=false;
     }
 }
+let time_min=document.querySelector('.exam_time').innerHTML;
+let time_second=60;
+setInterval(timer,'1000');
+function timer(){
+    time_second--;
+    if (time_second==0){
+        time_min--
+        time_second=60;
+        if (time_min==0){
+            // ajax
+        }
+    }
+    document.querySelector('.exam_time').innerHTML='time: '+time_min+' minute '+time_second+' second ';
+}
+

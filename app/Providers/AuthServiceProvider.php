@@ -26,5 +26,9 @@ class AuthServiceProvider extends ServiceProvider
             $get_role=$user->roles()->get();
             return $get_role[0]['pivot']['role_id']===1;
         });
+        Gate::define('view-student-role',function (User $user){
+            $get_role=$user->roles()->get();
+            return $get_role[0]['guard']==='student';
+        });
     }
 }

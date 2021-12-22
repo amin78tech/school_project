@@ -61,3 +61,13 @@ Route::group(['prefix'=>'/exams','middleware'=>'auth:admin,teacher,student'],fun
     Route::delete('/manage/quiz/delete/question/{id}',[\App\Http\Controllers\dashboard\ExamsController::class,'deleteQuestionInExam'])->name('ExamsController.deleteQuestionInExam');
     Route::post('/add/questions/exam/{id}',[\App\Http\Controllers\dashboard\ExamsController::class,'addQuestionsInexam'])->name('ExamsController.addQuestionsInexam');
 });
+// Student Route
+Route::group(['prefix'=>'/student','middleware'=>'auth:admin,teacher,student'],function (){
+    Route::get('/courses/list',[\App\Http\Controllers\dashboard\StudentController::class,'showStudentCourse'])->name('StudentController.showStudentCourse');
+    Route::get('/course/{id}/exams',[\App\Http\Controllers\dashboard\StudentController::class,'showExamsCourse'])->name('StudentController.showExamsCourse');
+    Route::get('/course/exam/{id}/questions',[\App\Http\Controllers\dashboard\StudentController::class,'showQuestionInExam'])->name('StudentController.showQuestionInExam');
+});
+// Notification
+Route::group(['prefix'=>'/student','middleware'=>'auth:admin,teacher,student'],function (){
+    Route::get('/read/notification/{id}',[\App\Http\Controllers\NotificationsController::class,'read'])->name('NotificationsController.read');
+});

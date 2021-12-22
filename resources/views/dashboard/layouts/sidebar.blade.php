@@ -68,6 +68,16 @@
                 </li>
 
             @endcan
+            @can('view-student-role')
+                <li>
+                    <a href="#"><i class="fa fa-file-text-o fa-fw"></i> Course<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ route('StudentController.showStudentCourse') }}">list</a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

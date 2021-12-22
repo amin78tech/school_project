@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class User extends \Illuminate\Foundation\Auth\User
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
     protected $fillable = ['id','name','family','username','email','password','option'];
     protected $table = 'users';
 

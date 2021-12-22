@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\dashboard;
 
+use App\Events\notifAddStudentInCourse;
+use App\Events\notifAddTeacherInCourse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CoursesRegisterRequest;
 use App\Models\Course;
@@ -56,7 +58,9 @@ class CoursesController extends Controller
             $course->end_date = $get_date['enddate'];
             $course->user_id = $get_date['optionTeacher'];
             $course->save();
+            notifAddTeacherInCourse::dispatch($get_date['optionTeacher']);
             foreach ($get_date['optionStudent'] as $item){
+                notifAddStudentInCourse::dispatch($item);
                 CourseUser::query()->insert([
                     "user_id"=>$item,
                     "course_id"=>$course->id

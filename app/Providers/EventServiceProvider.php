@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\notifAddStudentInCourse;
+use App\Events\notifAddTeacherInCourse;
+use App\Listeners\LnotifAddStudentInCourse;
+use App\Listeners\LnotifAddTeacherInCourse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        notifAddTeacherInCourse::class => [
+            LnotifAddTeacherInCourse::class
+        ],
+        notifAddStudentInCourse::class => [
+            LnotifAddStudentInCourse::class
+        ]
     ];
 
     /**
