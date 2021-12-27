@@ -24,9 +24,30 @@ function timer(){
         time_min--
         time_second=60;
         if (time_min==0){
-            // ajax
+            let get_exam=document.querySelector('.getExamId').getAttribute('value');
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8000/student/done/exam/"+get_exam);
+            xhttp.send()
+            window.location="http://localhost:8000/overview";
         }
     }
-    document.querySelector('.exam_time').innerHTML='time: '+time_min+' minute '+time_second+' second ';
+    document.querySelector('.exam_time').innerHTML='time: '+time_min+' minute';
+}
+function activeInputAns(e){
+    if (e.srcElement.parentNode.previousSibling.previousSibling.disabled==false){
+        e.srcElement.parentNode.previousSibling.previousSibling.disabled=true;
+    }else {
+        e.srcElement.parentNode.previousSibling.previousSibling.disabled=false;
+    }
 }
 
+function getTime(){
+    let get_time=document.querySelector('.exam_time').textContent;
+    let data=get_time.replace(/[^0-9]/g,"");
+    let get_User=document.querySelector('.getUserId').getAttribute('value');
+    let get_exam=document.querySelector('.getExamId').getAttribute('value');
+    let get_token=document.querySelector('.csrf_token').getAttribute('content');
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8000/student/done/exam/time/"+get_User+"/"+get_exam+"/"+data);
+    xhttp.send()
+}

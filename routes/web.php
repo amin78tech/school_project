@@ -7,7 +7,7 @@ Route::get('/',function (){
 //Route Overview
 Route::get("/overview",[\App\Http\Controllers\OverviewController::class,'show'])->name("OverviewController.show")->middleware('auth:admin,teacher,student');
 //Route logout
-Route::get('/logout',[\App\Http\Controllers\UserLogoutController::class,'logout'])->name('logout');
+Route::get('/logout',[\App\Http\Controllers\UserLogoutController::class,'logout'])->name('logout')->middleware('auth:admin,teacher,student');
 //Auth
 Route::get("/register",[\App\Http\Controllers\UserRegisterController::class,"create"])->name("UserRegisterController.create");
 Route::post("/register",[\App\Http\Controllers\UserRegisterController::class,"store"])->name("UserRegisterController.store");
@@ -66,6 +66,10 @@ Route::group(['prefix'=>'/student','middleware'=>'auth:admin,teacher,student'],f
     Route::get('/courses/list',[\App\Http\Controllers\dashboard\StudentController::class,'showStudentCourse'])->name('StudentController.showStudentCourse');
     Route::get('/course/{id}/exams',[\App\Http\Controllers\dashboard\StudentController::class,'showExamsCourse'])->name('StudentController.showExamsCourse');
     Route::get('/course/exam/{id}/questions',[\App\Http\Controllers\dashboard\StudentController::class,'showQuestionInExam'])->name('StudentController.showQuestionInExam');
+    Route::post('/course/exam/{exam_id}/{student_id}',[\App\Http\Controllers\dashboard\StudentController::class,'storeQuestionInExam'])->name('StudentController.storeQuestionInExam');
+    Route::post('/course/exam/des/{exam_id}/{student_id}',[\App\Http\Controllers\dashboard\StudentController::class,'storeQuestionInExamDes'])->name('StudentController.storeQuestionInExamDes');
+    Route::get('done/exam/{id}',[\App\Http\Controllers\dashboard\StudentController::class,'downExam'])->name('StudentController.downExam');
+    Route::get('done/exam/time/{user_id}/{exam_id}/{time}',[\App\Http\Controllers\dashboard\StudentController::class,'setTime']);
 });
 // Notification
 Route::group(['prefix'=>'/student','middleware'=>'auth:admin,teacher,student'],function (){

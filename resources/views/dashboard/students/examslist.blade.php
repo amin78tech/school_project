@@ -32,10 +32,21 @@
                                         <td>{{ $exam['start_date'] }}</td>
                                         <td>{{ $exam['end_time'] }}</td>
                                         <td style="display: flex; justify-content: center">
-                                            <form method="get" action="{{ route('StudentController.showQuestionInExam',['id'=>$exam['id']]) }}">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-success  fa fa-share" style="margin-left: 1.4rem !important;"></button>
-                                            </form>
+                                            @php
+                                                $get_status=\App\Models\Startexam::query()->where('exam_num',$exam['id'])->where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->select('status')->get();
+                                                $get_date=\App\Models\Exam::query()->where('id',$exam['id'])->get();
+                                            @endphp
+                                            @if($get_status[0]['status']==0)
+                                                <form method="get" action="{{ route('StudentController.showQuestionInExam',['id'=>$exam['id']]) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-danger  fa fa-share" style="margin-left: 1.4rem !important;" disabled></button>
+                                                </form>
+                                            @elseif($get_status[0]['status']==1)
+                                                <form method="get" action="{{ route('StudentController.showQuestionInExam',['id'=>$exam['id']]) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success  fa fa-share" style="margin-left: 1.4rem !important;"></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

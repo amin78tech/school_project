@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\dashboard;
 
+use App\Events\notifAddStudentInCourse;
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
 use App\Models\BankExam;
@@ -10,8 +11,12 @@ use App\Models\CourseUser;
 use App\Models\Descriptives;
 use App\Models\Exam;
 use App\Models\Option;
+use App\Models\Respon;
+use App\Models\Startexam;
 use App\Models\Test;
+use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -55,13 +60,101 @@ class StudentController extends Controller
         }
         $que_test=Test::query()->whereIn('bank_id',$arr_test)->get();
         $que_des=Descriptives::query()->whereIn('bank_id',$arr_des)->get();
+        $user_id=auth()->user()->id;
+        $exam_time=Exam::query()->where('id',$id)->select('time')->get();
+        $exam_time_update=Startexam::query()->where('exam_num',$id)->where('user_id',Auth::user()->id)->select('time')->get();
+        $set_start_exam=Startexam::query()->where('user_id',$user_id)->where('exam_num',$id)->get();
+        if (count($set_start_exam)==0){
+            Startexam::query()->insert([
+                'user_id'=>Auth::user()->id,
+               'exam_num' => $id,
+                'time'=>$exam_time[0]['time'],
+                'created_at'=> now(),
+            ]);
+        }
         $title='Add Question in Exam';
-        $time=Exam::query()->where('id',$id)->select('time')->get();
         return view('dashboard.students.startexam')
             ->with('title',$title)
             ->with('test',$que_test)
             ->with('descriptives',$que_des)
             ->with('exam_id',$id)
-            ->with('time',$time[0]['time']);
+            ->with('time',$exam_time_update[0]['time']);
+    }
+    public function storeQuestionInExam(Request $request,$exam_id,$student_id)
+    {
+        if (!is_null($request->question)){
+            $is_respone_for_ques=Respon::query()->where('bank_id',$request->question[0])->where('exam_id',$exam_id)->get();
+            if (count($is_respone_for_ques)==0){
+                foreach ($request->testAns as $key=>$item){
+                    Respon::query()->insert([
+                        'user_id'=>Auth::user()->id,
+                        'bank_id'=>$request->question[$key],
+                        'respon'=>$item,
+                        'exam_id'=>$exam_id,
+                        'created_at'=>now(),
+                        'score'=>1
+                    ]);
+                }
+                return back();
+            }else{
+                foreach ($is_respone_for_ques as $item){
+                    $item->delete();
+                }
+                foreach ($request->testAns as $key=>$item){
+                    Respon::query()->insert([
+                        'user_id'=>Auth::user()->id,
+                        'bank_id'=>$request->question[$key],
+                        'respon'=>$item,
+                        'exam_id'=>$exam_id,
+                        'created_at'=>now(),
+                        'score'=>1
+                    ]);
+                }
+                return back();
+            }
+        }else{
+            return back();
+        }
+
+    }
+
+    public function storeQuestionInExamDes(Request $request,$exam_id,$student_id)
+    {
+        $is_respone_for_ques=Respon::query()->where('bank_id',$request->question[0])->where('exam_id',$exam_id)->get();
+        if (count($is_respone_for_ques)==0){
+                Respon::query()->insert([
+                    'user_id'=>Auth::user()->id,
+                    'bank_id'=>intval($request->question),
+                    'respon'=>$request->desAns[0],
+                    'exam_id'=>$exam_id,
+                    'created_at'=>now(),
+                    'score'=>1
+                ]);
+                return back();
+        }else{
+                $is_respone_for_ques[0]->delete();
+                Respon::query()->insert([
+                    'user_id'=>Auth::user()->id,
+                    'bank_id'=>intval($request->question),
+                    'respon'=>$request->desAns[0],
+                    'exam_id'=>$exam_id,
+                    'created_at'=>now(),
+                    'score'=>1
+                ]);
+                return back();
+        }
+    }
+    public function downExam($id)
+    {
+        Startexam::query()->where('exam_num',$id)->where('user_id',Auth::user()->id)->update([
+           'status'=>0
+        ]);
+        return redirect('/overview');
+    }
+    public function setTime($user_id,$exam_id,$time)
+    {
+       Startexam::query()->where('user_id',$user_id)->where('exam_num',$exam_id)->update([
+            'time'=>$time,
+        ]);
     }
 }
